@@ -1,6 +1,7 @@
 const RequestError = require('../../helpers');
-const contactsSchema = require('../../schemas')
-const contacts = require('../../models/contacts');
+const {contactsSchema} = require('../../schemas')
+const Contact = require('../../models')
+
 
 const addContactCtrl = async (req, res, next) => {
 	try {
@@ -9,7 +10,7 @@ const addContactCtrl = async (req, res, next) => {
 		if (error) {
 			throw RequestError(400, error.message);
 		}
-		const result = await contacts.addContact(req.body);
+		const result = await Contact.create(req.body);
 		res.status(201).json(result);
 	} catch (error) {
 		next(error);
