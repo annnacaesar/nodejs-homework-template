@@ -1,5 +1,5 @@
-const RequestError = require('../../helpers');
-const Contact = require('../../models');
+const {RequestError} = require('../../helpers');
+const Contact = require('../../models/contact');
 
 const getContactByIdCtrl = async (req, res, next) => {
 	try {

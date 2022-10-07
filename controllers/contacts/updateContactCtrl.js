@@ -1,6 +1,6 @@
-const RequestError = require('../../helpers');
+const {RequestError} = require('../../helpers');
 const {contactsSchema} = require('../../schemas')
-const Contact = require('../../models')
+const Contact = require('../../models/contact')
 
 const updateContactCtrl = async (req, res, next) => {
 	try {
