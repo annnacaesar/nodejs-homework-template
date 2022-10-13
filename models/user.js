@@ -1,4 +1,5 @@
 const {Schema, model} = require('mongoose');
+const gravatar = require('gravatar')
 
 const {handleSaveErrors} = require('../helpers')
 
@@ -18,7 +19,12 @@ const userSchema = new Schema(  {
     default: "starter"
   },
   token: String,
-  avatarURL: String,
+  avatarURL: {
+    type: String,
+    default: function() { 
+      return gravatar.url(this.email, {s: "250"}, true)
+    },
+  },
 }, {versionKey: false, timestamps:true})
 
 userSchema.post("save", handleSaveErrors);
