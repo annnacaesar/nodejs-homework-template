@@ -1,7 +1,8 @@
 const { User } = require('../../models');
 const { registerSchema } = require('../../schemas');
-const { RequestError } = require('../../helpers');
+const { RequestError, sendEmail, createVerifyEmail } = require('../../helpers');
 const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
 
 const register = async (req, res) => {
 	const { error } = registerSchema.validate(req.body);
@@ -14,16 +15,23 @@ const register = async (req, res) => {
 		throw RequestError(409, 'Email in use');
 	}
 	const hashPassword = await bcrypt.hash(password, 10);
+	const verificationToken = uuidv4();
 	const newUser = await User.create({
 		email,
 		password: hashPassword,
 		description,
 		token,
+		verificationToken
 	});
+
+	const mail = createVerifyEmail(email, verificationToken)
+	await sendEmail(mail);
+
 	res.status(201).json({
 		user: {
 			email: newUser.email,
 			subscription: 'starter',
+			verificationToken: newUser.verificationToken,
 		},
 	});
 };
