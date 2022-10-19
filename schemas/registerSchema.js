@@ -5,6 +5,7 @@ const registerSchema = Joi.object({
 	password: Joi.string().min(6).required(),
 	description:  Joi.string(),
 	token: Joi.string(),
+	avatarURL: Joi.string(),
 })
 
 module.exports = {
